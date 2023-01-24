@@ -40,29 +40,20 @@ export async function register(req: Request, res: Response) {
 
   user.password = await bcrypt.hash(password, salt);
 
-  // jwt.sign(
-  //   payload,
-  //   process.env.JWT_SECRET!,
-
-  //   { expiresIn: "1h" },
-
-  //   (err, token) => {
-  //     if (err) throw err;
-  //     res.status(201).json({
-  //       token: token,
-  //       tgId: user.tgId,
-  //       userId: user._id,
-  //       message: "User created",
-  //     });
-  //   }
-  // );
-  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
-    expiresIn: "1h",
-  });
-  res.json({
-    token,
-    userId: user._id,
-    tgId: user.tgId,
-    message: "User Created",
-  });
+  try {
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+      expiresIn: "1h",
+    });
+    res.json({
+      token,
+      userId: user._id,
+      tgId: user.tgId,
+      message: "User Created",
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      message: "Error signing token",
+      error: err.message,
+    });
+  }
 }
