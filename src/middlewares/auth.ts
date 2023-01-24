@@ -12,7 +12,9 @@ export const authMiddleware = (
 
     // check if no token
     if (!token) {
-      return res.status(401).json({ message: "No token, authorization denied" });
+      return res
+        .status(401)
+        .json({ message: "No token, authorization denied" });
     }
 
     // use actual secret key here
