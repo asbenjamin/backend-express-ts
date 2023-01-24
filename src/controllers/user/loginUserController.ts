@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { User } from "../../models/users";
 import { collections } from "../../utils/databaseservices";
 
 export async function login(req: Request, res: Response) {

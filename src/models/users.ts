@@ -32,8 +32,3 @@ userSchema.statics.build = (attr: IUser) => {
 };
 
 export const User = mongoose.model<userDoc, userInterface>("User", userSchema);
-
-// User.build({
-//     tgId: 223,
-//     password: "ewrfe"
-// })
