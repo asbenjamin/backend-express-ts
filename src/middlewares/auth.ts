@@ -21,15 +21,13 @@ export const authMiddleware = (
     verify(token, process.env.JWT_SECRET!, (err: any, decode: any) => {
       if (err || !decode) {
         return res.status(401).json({
-          success: false,
-          message: "unauthorized",
+          message: "Unauthorized Access or Expired Token",
         });
       } else {
         req.user = decode?.user || decode;
-        console.log("00000000 user here", req.user["userId"]);
 
-        return res.status(200).json({
-          msg: "Success",
+        res.status(200).json({
+          message: "Success",
           userId: req.user.userId,
         });
         next();

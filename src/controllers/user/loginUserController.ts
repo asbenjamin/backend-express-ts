@@ -12,9 +12,9 @@ export async function login(req: Request, res: Response) {
     return res.status(422).json({ errors: errors.array() });
   }
 
-  // find user by phone
+  // find user by tgId
   const user = await collections.users?.findOne({
-    phone: parseInt(req.body.phone),
+    tgId: parseInt(req.body.tgId),
   });
   if (!user) {
     return res.status(404).json({ message: "User not found" });

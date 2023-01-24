@@ -20,7 +20,7 @@ class loginUserRouter {
   */
   private _configure() {
     this._router.post('/', [
-        check('phone').not().isEmpty().withMessage('telegram id is required'),
+        check('tgId').not().isEmpty().withMessage('telegram id is required'),
         check('password').isLength({min:8}).not().isEmpty().withMessage('Please use a password to proceed')
     ], this._controller);
   }

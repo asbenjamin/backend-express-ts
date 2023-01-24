@@ -1,26 +1,25 @@
-import { configureMiddleware } from './middlewares/config'
-import dotenv from 'dotenv';
-import express, { Request, Response, NextFunction } from 'express';
-import MasterRouter from './routers/MasterRouter';
-import { connectToDatabase } from "./utils/databaseservices"
+import { configureMiddleware } from "./middlewares/config";
+import dotenv from "dotenv";
+import express, { Request, Response, NextFunction } from "express";
+import MasterRouter from "./routers/MasterRouter";
+import { connectToDatabase } from "./utils/databaseservices";
 
 // ...
-import ErrorHandler from './models/ErrorHandler';
+import ErrorHandler from "./models/ErrorHandler";
 
 // load the environment variables from the .env file
 dotenv.config({
-  path: '.env'
+  path: ".env",
 });
 
 /**
  * Express server application class.
  * @description Will later contain the routing system.
-*/
+ */
 class Server {
   public app = express();
   public router = MasterRouter;
 }
-
 
 // initialize server app
 const server = new Server();
@@ -31,22 +30,22 @@ configureMiddleware(server.app);
   server.app.listen(port, () => console.log(`> Listening on port ${port}`));
 })();
 
-
 connectToDatabase()
-    .then(() => {
-        server.app.use("/api", server.router);
-
-    })
-    .catch((error: Error) => {
-        console.error("Database connection failed", error);
-        process.exit();
-    });
+  .then(() => {
+    server.app.use("/api", server.router);
+  })
+  .catch((error: Error) => {
+    console.error("Database connection failed", error);
+    process.exit();
+  });
 
 // make server app handle any error
-server.app.use((err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
-  res.status(err.statusCode || 500).json({
-    status: 'error',
-    statusCode: err.statusCode,
-    message: err.message
-  });
-});
+server.app.use(
+  (err: ErrorHandler, req: Request, res: Response, next: NextFunction) => {
+    res.status(err.statusCode || 500).json({
+      status: "error",
+      statusCode: err.statusCode,
+      message: err.message,
+    });
+  }
+);

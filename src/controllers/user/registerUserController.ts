@@ -30,29 +30,39 @@ export async function register(req: Request, res: Response) {
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(password, salt);
 
-  console.log(user.tgId, user.password);
   await collections.users?.insertOne(user);
 
   const payload = {
     user: {
-      id: user.id,
+      id: user._id,
     },
   };
 
   user.password = await bcrypt.hash(password, salt);
-  jwt.sign(
-    payload,
-    process.env.JWT_SECRET!,
 
-    { expiresIn: 360000 },
+  // jwt.sign(
+  //   payload,
+  //   process.env.JWT_SECRET!,
 
-    (err, token) => {
-      if (err) throw err;
-      res.status(201).json({
-        token: token,
-        user: user.tgId,
-        detail: "User created",
-      });
-    }
-  );
+  //   { expiresIn: "1h" },
+
+  //   (err, token) => {
+  //     if (err) throw err;
+  //     res.status(201).json({
+  //       token: token,
+  //       tgId: user.tgId,
+  //       userId: user._id,
+  //       message: "User created",
+  //     });
+  //   }
+  // );
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+    expiresIn: "1h",
+  });
+  res.json({
+    token,
+    userId: user._id,
+    tgId: user.tgId,
+    message: "User Created",
+  });
 }
