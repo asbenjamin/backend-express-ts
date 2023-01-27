@@ -36,6 +36,6 @@ export const authMiddleware = (
 
     next();
   } catch (err) {
-    res.status(401).json({ msg: "Token is not valid, and you know it" });
+    res.status(401).json({ message: "Token is not valid, and you know it" });
   }
 };
